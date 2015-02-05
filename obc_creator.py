@@ -213,7 +213,7 @@ def crearFronterasEsteSur(dataSourceFile,sMaskFile,iEastIndex=-1,iSouthIndex=1, 
         EastSlice[EastSlice > 0] = EastSlice[EastSlice > 0] - 272.15
         
         # interpolar 
-        nEastTempGrid[idx,:,:] = applyMask(interpIrregularGridToRegular(ncMerDepth,ncMerLat[iMinMaskLatInData:iMaxMaskLatInData],EastSlice,ncMaskDepth,ncMaskEastLat), ncMaskEast)
+        nEastTempGrid[idx,:,:] = applyMask(interpIrregularGridToRegular(ncMerDepth,ncMerLat[iMinMaskLatInData:iMaxMaskLatInData],EastSlice,ncMaskDepth,ncMaskEastLat,'nearest'), ncMaskEast)
         # Frontera Sur
         SouthSlice = ncMer.variables['temperature'][idx,:,iMerSouthIndex,iMinMaskLonInData:iMaxMaskLonInData]
         SouthSlice[SouthSlice > 0] = SouthSlice[SouthSlice > 0] - 272.15
@@ -225,7 +225,7 @@ def crearFronterasEsteSur(dataSourceFile,sMaskFile,iEastIndex=-1,iSouthIndex=1, 
         # Frontera Este
         EastSlice = ncMer.variables['salinity'][idx,:,iMinMaskLatInData:iMaxMaskLatInData,iMerEastIndex]
         # interpolar 
-        nEastSalGrid[idx,:,:] = applyMask(interpIrregularGridToRegular(ncMerDepth,ncMerLat[iMinMaskLatInData:iMaxMaskLatInData],EastSlice,ncMaskDepth,ncMaskEastLat), ncMaskEast )
+        nEastSalGrid[idx,:,:] = applyMask(interpIrregularGridToRegular(ncMerDepth,ncMerLat[iMinMaskLatInData:iMaxMaskLatInData],EastSlice,ncMaskDepth,ncMaskEastLat,'nearest'), ncMaskEast )
         # Frontera Sur
         SouthSlice = ncMer.variables['salinity'][idx,:,iMerSouthIndex,iMinMaskLonInData:iMaxMaskLonInData]
         # interpolar 
@@ -236,7 +236,7 @@ def crearFronterasEsteSur(dataSourceFile,sMaskFile,iEastIndex=-1,iSouthIndex=1, 
         # Frontera Este
         EastSlice = ncMer.variables['u'][idx,:,iMinMaskLatInData:iMaxMaskLatInData,iMerEastIndex]
         # interpolar 
-        nEastUcompGrid[idx,:,:] = applyMask(interpIrregularGridToRegular(ncMerDepth,ncMerLat[iMinMaskLatInData:iMaxMaskLatInData],EastSlice,ncMaskDepth,ncMaskEastLat), ncMaskEast )
+        nEastUcompGrid[idx,:,:] = applyMask(interpIrregularGridToRegular(ncMerDepth,ncMerLat[iMinMaskLatInData:iMaxMaskLatInData],EastSlice,ncMaskDepth,ncMaskEastLat,'nearest'), ncMaskEast )
         # Frontera Sur
         SouthSlice = ncMer.variables['u'][idx,:,iMerSouthIndex,iMinMaskLonInData:iMaxMaskLonInData]
         # interpolar 
@@ -247,7 +247,7 @@ def crearFronterasEsteSur(dataSourceFile,sMaskFile,iEastIndex=-1,iSouthIndex=1, 
         # Frontera Este
         EastSlice = ncMer.variables['v'][idx,:,iMinMaskLatInData:iMaxMaskLatInData,iMerEastIndex]
         # interpolar 
-        nEastVcompGrid[idx,:,:] = applyMask(interpIrregularGridToRegular(ncMerDepth,ncMerLat[iMinMaskLatInData:iMaxMaskLatInData],EastSlice,ncMaskDepth,ncMaskEastLat), ncMaskEast )
+        nEastVcompGrid[idx,:,:] = applyMask(interpIrregularGridToRegular(ncMerDepth,ncMerLat[iMinMaskLatInData:iMaxMaskLatInData],EastSlice,ncMaskDepth,ncMaskEastLat,'nearest'), ncMaskEast )
         # Frontera Sur
         SouthSlice = ncMer.variables['v'][idx,:,iMerSouthIndex,iMinMaskLonInData:iMaxMaskLonInData]
         # interpolar 
