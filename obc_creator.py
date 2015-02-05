@@ -84,7 +84,7 @@ def dateToNemoCalendar(data, ctype='gregorian',give='full'):
     return np.squeeze(newc) 
 
 
-def interpIrregularGridToRegular(xgrid, ygrid, zdata, xgridnew, ygridnew):
+def interpIrregularGridToRegular(xgrid, ygrid, zdata, xgridnew, ygridnew, imethod='linear'):
     """
      Funcion para interpolar una seccion 2D zdata[:,:] con puntos validos en 
      el conjunto de coordenadas xgrid[:],ygrid[:] a una nueva malla 2D con 
@@ -104,7 +104,7 @@ def interpIrregularGridToRegular(xgrid, ygrid, zdata, xgridnew, ygridnew):
                 pointdata = np.append(pointdata,zdata[i,j]) 
     # Crear la malla regular, con el metodo griddata, que a partir de la lista de puntos pointdata (X=xdata_valid,Y=ydata_valid) , va a generar la malla 
     # con X = ygridnew[None,:] Y = xgridnew[:,None] 
-    newZdata = interpolate.griddata((ydata_valid,xdata_valid), pointdata, (ygridnew[None,:],xgridnew[:,None]), method='linear') 
+    newZdata = interpolate.griddata((ydata_valid,xdata_valid), pointdata, (ygridnew[None,:],xgridnew[:,None]), method=imethod) 
     return newZdata 
 
 
@@ -210,12 +210,15 @@ def crearFronterasEsteSur(dataSourceFile,sMaskFile,iEastIndex=-1,iSouthIndex=1, 
         ## TEMPERATURA
         # Frontera Este
         EastSlice = ncMer.variables['temperature'][idx,:,iMinMaskLatInData:iMaxMaskLatInData,iMerEastIndex]
+        EastSlice[EastSlice > 0] = EastSlice[EastSlice > 0] - 272.15
+        
         # interpolar 
         nEastTempGrid[idx,:,:] = applyMask(interpIrregularGridToRegular(ncMerDepth,ncMerLat[iMinMaskLatInData:iMaxMaskLatInData],EastSlice,ncMaskDepth,ncMaskEastLat), ncMaskEast)
         # Frontera Sur
         SouthSlice = ncMer.variables['temperature'][idx,:,iMerSouthIndex,iMinMaskLonInData:iMaxMaskLonInData]
+        SouthSlice[SouthSlice > 0] = SouthSlice[SouthSlice > 0] - 272.15
         # interpolar 
-        nSouthTempGrid[idx,:,:] = applyMask(interpIrregularGridToRegular(ncMerDepth,ncMerLon[iMinMaskLonInData:iMaxMaskLonInData],SouthSlice,ncMaskDepth,ncMaskSouthLon), ncMaskSouth)
+        nSouthTempGrid[idx,:,:] = applyMask(interpIrregularGridToRegular(ncMerDepth,ncMerLon[iMinMaskLonInData:iMaxMaskLonInData],SouthSlice,ncMaskDepth,ncMaskSouthLon,'nearest'), ncMaskSouth)
 
         #________________
         ## SALINIDAD
@@ -226,7 +229,7 @@ def crearFronterasEsteSur(dataSourceFile,sMaskFile,iEastIndex=-1,iSouthIndex=1, 
         # Frontera Sur
         SouthSlice = ncMer.variables['salinity'][idx,:,iMerSouthIndex,iMinMaskLonInData:iMaxMaskLonInData]
         # interpolar 
-        nSouthSalGrid[idx,:,:] = applyMask(interpIrregularGridToRegular(ncMerDepth,ncMerLon[iMinMaskLonInData:iMaxMaskLonInData],SouthSlice,ncMaskDepth,ncMaskSouthLon), ncMaskSouth )   
+        nSouthSalGrid[idx,:,:] = applyMask(interpIrregularGridToRegular(ncMerDepth,ncMerLon[iMinMaskLonInData:iMaxMaskLonInData],SouthSlice,ncMaskDepth,ncMaskSouthLon,'nearest'), ncMaskSouth )   
 
         #________________
         ## Componente de Velocidad U
@@ -237,7 +240,7 @@ def crearFronterasEsteSur(dataSourceFile,sMaskFile,iEastIndex=-1,iSouthIndex=1, 
         # Frontera Sur
         SouthSlice = ncMer.variables['u'][idx,:,iMerSouthIndex,iMinMaskLonInData:iMaxMaskLonInData]
         # interpolar 
-        nSouthUcompGrid[idx,:,:] = applyMask(interpIrregularGridToRegular(ncMerDepth,ncMerLon[iMinMaskLonInData:iMaxMaskLonInData],SouthSlice,ncMaskDepth,ncMaskSouthLon), ncMaskSouth ) 
+        nSouthUcompGrid[idx,:,:] = applyMask(interpIrregularGridToRegular(ncMerDepth,ncMerLon[iMinMaskLonInData:iMaxMaskLonInData],SouthSlice,ncMaskDepth,ncMaskSouthLon,'nearest'), ncMaskSouth ) 
 
         #________________
         ## Componente de Velocidad V
@@ -248,7 +251,7 @@ def crearFronterasEsteSur(dataSourceFile,sMaskFile,iEastIndex=-1,iSouthIndex=1, 
         # Frontera Sur
         SouthSlice = ncMer.variables['v'][idx,:,iMerSouthIndex,iMinMaskLonInData:iMaxMaskLonInData]
         # interpolar 
-        nSouthVcompGrid[idx,:,:] = applyMask(interpIrregularGridToRegular(ncMerDepth,ncMerLon[iMinMaskLonInData:iMaxMaskLonInData],SouthSlice,ncMaskDepth,ncMaskSouthLon), ncMaskSouth )                 
+        nSouthVcompGrid[idx,:,:] = applyMask(interpIrregularGridToRegular(ncMerDepth,ncMerLon[iMinMaskLonInData:iMaxMaskLonInData],SouthSlice,ncMaskDepth,ncMaskSouthLon,'nearest'), ncMaskSouth )                 
 
     ncMer.close()
     
