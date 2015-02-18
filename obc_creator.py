@@ -469,15 +469,16 @@ def crearFronterasEsteSur(dataSourceFile,sMaskFile,iEastIndex=-1,iSouthIndex=1, 
 
             # Llenar el ultimo valor, en los archivos, para lograr "permanencia."
             if (idx_tval == (ncMerTime.size-1)):
-	            ncOutFiles['eastTS'].saveDataS('votemper' , nEastTempGrid[idx_tval,:,:] , slice(idx,timeVD.size) )
-	            ncOutFiles['eastTS'].saveDataS('vosaline' , nEastSalGrid[idx_tval,:,:] , slice(idx,timeVD.size) )
-	            ncOutFiles['eastU'].saveDataS('vozocrtx' , nEastUcompGrid[idx_tval,:,:] , slice(idx,timeVD.size) )
-	            ncOutFiles['eastV'].saveDataS('vomecrty' , nEastVcompGrid[idx_tval,:,:] , slice(idx,timeVD.size) ) 
+                for ext in range(idx,len(timeVD)):
+                    ncOutFiles['eastTS'].saveDataS('votemper' , nEastTempGrid[idx_tval,:,:] , (ext) )
+                    ncOutFiles['eastTS'].saveDataS('vosaline' , nEastSalGrid[idx_tval,:,:] , (ext) )
+                    ncOutFiles['eastU'].saveDataS('vozocrtx' , nEastUcompGrid[idx_tval,:,:] , (ext) )
+                    ncOutFiles['eastV'].saveDataS('vomecrty' , nEastVcompGrid[idx_tval,:,:] , (ext) ) 
 
-	            ncOutFiles['southTS'].saveDataS('votemper' , nSouthTempGrid[idx_tval,:,:] , slice(idx,timeVD.size) )
-	            ncOutFiles['southTS'].saveDataS('vosaline' , nSouthSalGrid[idx_tval,:,:] , slice(idx,timeVD.size) )
-	            ncOutFiles['southU'].saveDataS('vozocrtx' , nSouthUcompGrid[idx_tval,:,:] , slice(idx,timeVD.size) )
-	            ncOutFiles['southV'].saveDataS('vomecrty' , nSouthVcompGrid[idx_tval,:,:] , slice(idx,timeVD.size) )            	
+                    ncOutFiles['southTS'].saveDataS('votemper' , nSouthTempGrid[idx_tval,:,:] , (ext) )
+                    ncOutFiles['southTS'].saveDataS('vosaline' , nSouthSalGrid[idx_tval,:,:] , (ext) )
+                    ncOutFiles['southU'].saveDataS('vozocrtx' , nSouthUcompGrid[idx_tval,:,:] , (ext) )
+                    ncOutFiles['southV'].saveDataS('vomecrty' , nSouthVcompGrid[idx_tval,:,:] , (ext) ) 
 
 
             # Lidiar con los indices -1 y +1 del periodo temporal. 
