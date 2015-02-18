@@ -467,6 +467,19 @@ def crearFronterasEsteSur(dataSourceFile,sMaskFile,iEastIndex=-1,iSouthIndex=1, 
             ncOutFiles['southU'].saveDataS('vozocrtx' , nSouthUcompGrid[idx_tval,:,:] , (idx))
             ncOutFiles['southV'].saveDataS('vomecrty' , nSouthVcompGrid[idx_tval,:,:] , (idx)) 
 
+            # Llenar el ultimo valor, en los archivos, para lograr "permanencia."
+            if (idx_tval == (ncMerTime.size-1)):
+	            ncOutFiles['eastTS'].saveDataS('votemper' , nEastTempGrid[idx_tval,:,:] , slice(idx,timeVD.size) )
+	            ncOutFiles['eastTS'].saveDataS('vosaline' , nEastSalGrid[idx_tval,:,:] , slice(idx,timeVD.size) )
+	            ncOutFiles['eastU'].saveDataS('vozocrtx' , nEastUcompGrid[idx_tval,:,:] , slice(idx,timeVD.size) )
+	            ncOutFiles['eastV'].saveDataS('vomecrty' , nEastVcompGrid[idx_tval,:,:] , slice(idx,timeVD.size) ) 
+
+	            ncOutFiles['southTS'].saveDataS('votemper' , nSouthTempGrid[idx_tval,:,:] , slice(idx,timeVD.size) )
+	            ncOutFiles['southTS'].saveDataS('vosaline' , nSouthSalGrid[idx_tval,:,:] , slice(idx,timeVD.size) )
+	            ncOutFiles['southU'].saveDataS('vozocrtx' , nSouthUcompGrid[idx_tval,:,:] , slice(idx,timeVD.size) )
+	            ncOutFiles['southV'].saveDataS('vomecrty' , nSouthVcompGrid[idx_tval,:,:] , slice(idx,timeVD.size) )            	
+
+
             # Lidiar con los indices -1 y +1 del periodo temporal. 
             if sFilesSize == 'yearly':
                 conditionLessOne = (tval_datetime.month == 1 and tval_datetime.day == 1 and idx_tval > 0)
